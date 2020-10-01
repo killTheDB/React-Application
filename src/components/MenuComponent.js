@@ -1,58 +1,46 @@
-/* eslint-disable no-useless-constructor */
-import React, { Component } from "react";
-import { Card, CardImg, CardImgOverlay, CardText, CardTitle, CardBody } from 'reactstrap';
+import React, { useState, useEffect } from "react";
+import { Card, CardImg, CardImgOverlay, CardTitle } from "reactstrap";
 
-class Menu extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedDish: null,
-    };
-  }
+import Dishdetail from "./DishDetailComponent";
 
-  onDishSelect(dish) {
-    this.setState({ selectedDish: dish });
-  }
+const Menu = ({ dishes }) => {
+  useEffect(() => {
+    console.log("Menu LifeCycle: useEffect as componentDidMount");
+  }, []);
 
-  renderDish(dish) {
-    if (dish != null)
-      return (
-        <Card>
-          <CardImg top src={dish.image} alt={dish.name} />
-          <CardBody>
-            <CardTitle>{dish.name}</CardTitle>
-            <CardText>{dish.description}</CardText>
-          </CardBody>
-        </Card>
-      );
-    else return <div></div>;
-  }
+  const [appState, setAppState] = useState({ selectedDish: null });
 
-  render() {
-    const menu = this.props.dishes.map((dish) => {
-      return (
-        <div key={dish.id} className="col-12 col-md-5 m-1">
-          <Card onClick={() => this.onDishSelect(dish)}>
-            <CardImg width="100%" src={dish.image} alt={dish.name} />
-            <CardImgOverlay>
-              <CardTitle>{dish.name}</CardTitle>
-            </CardImgOverlay>
-          </Card>
-        </div>
-      );
-    });
+  const onSelectedItemChanged = (d) => setAppState({ selectedDish: d });
 
-    return (
-      <div className="Container">
-        <div className="row">{menu}</div>
-        <div className="row">
-          <div className="col-12 col-md-5 m-1">
-            {this.renderDish(this.state.selectedDish)}
-          </div>
-        </div>
-      </div>
-    );
-  }
+  console.log({ msg: "Menu LifeCycle: render; twice in debug mode", dishes });
+  var onDishSelect = (d) => {
+    onSelectedItemChanged(d);
+  };
+  return (
+    <div className="container">
+      <div className="row">{renderRegularDishes(dishes, onDishSelect)}</div>
+      <Dishdetail dish={appState.selectedDish} />
+    </div>
+  );
+};
+
+function renderRegularDishes(dishes, onDishSelect) {
+  return dishes.map((dish) => {
+    return renderRegularDish(dish, onDishSelect);
+  });
+}
+
+function renderRegularDish(dish, onDishSelect) {
+  return (
+    <div key={dish.id} className="col-12 col-md-5 m-1">
+      <Card onClick={() => onDishSelect(dish)}>
+        <CardImg width="100%" src={dish.image} alt={dish.name} />
+        <CardImgOverlay>
+          <CardTitle>{dish.name}</CardTitle>
+        </CardImgOverlay>
+      </Card>
+    </div>
+  );
 }
 
 export default Menu;
