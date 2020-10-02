@@ -53,7 +53,12 @@ function renderComments(dish) {
                   <div>{c.comment}</div>{" "}
                   <div>
                     -- {c.author} &nbsp;&nbsp;{" "}
-                    {new Date(c.date).toISOString().slice(0, 10)}
+                    {/* {new Date(c.date).toISOString().slice(0, 10)} */}
+                    {new Intl.DateTimeFormat("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "2-digit",
+                    }).format(new Date(Date.parse(c.date)))}
                   </div>
                   <br />{" "}
                 </li>

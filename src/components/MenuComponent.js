@@ -1,7 +1,7 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
-import { Card, CardImg, CardImgOverlay, CardTitle } from "reactstrap";
-
 import Dishdetail from "./DishDetailComponent";
+import { Card, CardImg, CardImgOverlay, CardTitle } from "reactstrap";
 
 const Menu = ({ dishes }) => {
   useEffect(() => {
